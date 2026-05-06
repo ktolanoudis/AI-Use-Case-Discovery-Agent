@@ -4,6 +4,7 @@
   var NEW_CHAT_HINTS = ['new chat', 'new thread', 'new conversation'];
   var SURVEY_LINK_HINT = 'continue to the experience survey';
   var SURVEY_REDIRECT_KEY = 'ai_enable_last_survey_redirect_href';
+  var MOBILE_PROGRESS_MAX_WIDTH = 768;
   var progressBarFill = null;
   var progressBarLabel = null;
   var progressInterval = null;
@@ -40,8 +41,20 @@
     maybeAutoOpenSurveyTab();
   }
 
+  function isMobileProgressDisabled() {
+    return window.innerWidth <= MOBILE_PROGRESS_MAX_WIDTH;
+  }
+
   function ensureInterviewProgressBar() {
     var existing = document.getElementById('interview-progress-shell');
+    if (isMobileProgressDisabled()) {
+      if (existing && existing.parentNode) {
+        existing.parentNode.removeChild(existing);
+      }
+      progressBarFill = null;
+      progressBarLabel = null;
+      return;
+    }
     var shouldShow = shouldShowInterviewProgressBar();
     var progress = maxInterviewProgress || 0.06;
     var mountInfo = progress >= 0.95 ? null : findHeaderMountInfo();
@@ -405,6 +418,10 @@
 
   function updateInterviewProgressBar() {
     ensureInterviewProgressBar();
+    if (isMobileProgressDisabled()) {
+      maybeAutoOpenSurveyTab();
+      return;
+    }
     var text = document.body ? document.body.innerText || '' : '';
     if (shouldResetProgressForFreshInterview(text)) {
       maxInterviewProgress = 0;

@@ -122,3 +122,9 @@ body[data-mui-color-scheme="dark"]::after {
     display: none;
   }
 }
+
+@media (max-width: 768px) {
+  #interview-progress-shell {
+    display: none !important;
+  }
+}
