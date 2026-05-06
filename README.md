@@ -13,6 +13,18 @@ It interviews employees, builds company-level memory across interviews, generate
 
 ---
 
+# Framework And System Architecture
+
+The thesis framework is represented as a high-level discovery loop. The app operationalizes this framework through an agentic interview system that captures employee workflow information, updates structured notes, generates AI use cases, collects feedback, and stores validated company memory for later interviews.
+
+![AI-Enable discovery agent framework](./aienable_flowchart.png)
+
+The implementation is organized around a Chainlit orchestrator, specialized interview/report/feedback agents, persistent checkpoints, and company-level memory.
+
+![AI-Enable programming architecture](./aienable_programming_flowchart.png)
+
+---
+
 # Quick Start
 
 Requirements
