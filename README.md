@@ -2,12 +2,18 @@
 
 A conversational app for discovering, validating, and prioritizing internal AI opportunities through structured employee interviews.
 
-The app is built around the AI use-case discovery framework used in the thesis work behind this project. It focuses on Steps 2 to 5:
+The app is built around the AI use-case discovery framework used in the thesis work behind this project. The full framework has eight steps:
 
-- Step 2: identify day-to-day tasks and workflow details
+- Step 1: define the North Star
+- Step 2: identify and break down day-to-day tasks
 - Step 3: generate AI use case opportunities
 - Step 4: define useful KPIs
 - Step 5: assess feasibility, constraints, and implementation risk
+- Step 6: create an AI roadmap
+- Step 7: obtain CFO approval
+- Step 8: pilot and loop learnings
+
+The app operationalizes Steps 1 to 5. Step 1 is only asked when the interviewee appears to be a very high-ranking company member, such as C-suite, founder, president, or equivalent company leadership. For other roles, the app starts from task discovery and infers strategic alignment from company context and interview evidence.
 
 It interviews employees, builds company-level memory across interviews, generates structured reports, and asks interviewees to review the proposed AI use cases before the interview is closed.
 
@@ -16,6 +22,10 @@ It interviews employees, builds company-level memory across interviews, generate
 # Framework And System Architecture
 
 The thesis framework is represented as a high-level discovery loop. The app operationalizes this framework through an agentic interview system that captures employee workflow information, updates structured notes, generates AI use cases, collects feedback, and stores validated company memory for later interviews.
+
+![AI-Enable full eight-step framework](./AI-Enable.png)
+
+The full framework includes North Star definition, task breakdown, AI use-case identification, KPI definition, feasibility evaluation, roadmap creation, CFO approval, and pilot learning loops. The app currently covers Steps 1-5, with Step 1 reserved for very high-ranking company leadership.
 
 ![AI-Enable discovery agent framework](./aienable_flowchart.png)
 

@@ -4,7 +4,7 @@ from conversation_utils import avoid_immediate_question_repeat, build_analysis_t
 from company_memory import assess_theme_alignment, assess_theme_relevance, get_validated_recurring_themes
 from interview_agent import next_question, update_notes
 from interview_readiness import count_user_turns, evaluate_notes_readiness
-from role_classifier import classify_seniority, should_ask_north_star
+from role_classifier import should_ask_north_star_for_role
 from session_state import DEBUG_QUESTION_FLOW, MAX_INTERVIEW_USER_TURNS, READY_STREAK_REQUIRED, debug_log
 
 MAX_THEME_VALIDATIONS_PER_INTERVIEW = 2
@@ -253,9 +253,8 @@ def plan_interview_response(messages: list) -> str:
         return final_prompt
 
     role = str(metadata.get("role") or "").strip()
-    seniority = classify_seniority(role or "associate")
     has_north_star = bool(company_context and company_context.get("north_star"))
-    ask_north_star = should_ask_north_star(seniority, has_north_star)
+    ask_north_star = should_ask_north_star_for_role(role, has_north_star)
     if DEBUG_QUESTION_FLOW:
         debug_log(
             "question_planning",

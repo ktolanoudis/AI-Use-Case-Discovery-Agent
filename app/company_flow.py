@@ -6,7 +6,7 @@ from collection_intent import normalize_collection_value, parse_collection_respo
 from company_research import format_company_context, normalize_website_url, research_company
 from conversation_utils import get_interview_strategy_description, has_valid_north_star, split_prompt_context
 from db import get_company_insights, get_company_interview_count
-from role_classifier import classify_seniority, should_ask_north_star
+from role_classifier import classify_seniority, should_ask_north_star_for_role
 from session_state import WELCOME_TEXT
 
 
@@ -76,7 +76,7 @@ async def start_interview_with_company_context(save_checkpoint, message: cl.Mess
     metadata["seniority_level"] = seniority.value
 
     has_north_star = has_valid_north_star(company_insights.get("north_star")) if company_insights else False
-    ask_north_star = should_ask_north_star(seniority, has_north_star)
+    ask_north_star = should_ask_north_star_for_role(role, has_north_star)
     if has_north_star:
         metadata["north_star_source_hint"] = "existing_company_memory"
     elif ask_north_star:
@@ -125,7 +125,7 @@ async def start_interview_without_company_context(save_checkpoint, message: cl.M
     cl.user_session.set("interview_count", 0)
     cl.user_session.set("company_context", None)
 
-    if should_ask_north_star(seniority, False):
+    if should_ask_north_star_for_role(role, False):
         cl.user_session.set("framework_step", "step_1_north_star")
         prompt = "**What are the main business goals or strategic priorities for your organization?**"
     else:
@@ -211,7 +211,7 @@ async def run_company_setup(save_checkpoint, message: cl.Message = None) -> None
         metadata["seniority_level"] = seniority.value
 
         has_north_star = has_valid_north_star(company_insights.get("north_star")) if company_insights else False
-        ask_north_star = should_ask_north_star(seniority, has_north_star)
+        ask_north_star = should_ask_north_star_for_role(role, has_north_star)
         if has_north_star:
             metadata["north_star_source_hint"] = "existing_company_memory"
         elif ask_north_star:

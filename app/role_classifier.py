@@ -72,5 +72,40 @@ def should_ask_north_star(seniority: SeniorityLevel, has_existing_north_star: bo
     if has_existing_north_star:
         return False
     
-    # Ask executives and senior people
-    return seniority in [SeniorityLevel.EXECUTIVE, SeniorityLevel.SENIOR]
+    # Ask only very senior company leadership. The caller should use
+    # should_ask_north_star_for_role() when the raw title is available.
+    return seniority == SeniorityLevel.EXECUTIVE
+
+
+def is_company_leadership_role(role: str) -> bool:
+    """Return True only for roles likely to know company-level North Star strategy."""
+    role_lower = f" {str(role or '').lower()} "
+    leadership_patterns = [
+        " ceo ",
+        " cto ",
+        " cfo ",
+        " coo ",
+        " cio ",
+        " cmo ",
+        " chro ",
+        " chief ",
+        " founder ",
+        " co-founder ",
+        " cofounder ",
+        " president ",
+        " managing director ",
+        " general manager ",
+        " executive chairman ",
+    ]
+    if any(pattern in role_lower for pattern in leadership_patterns):
+        return True
+    return bool(
+        (" vp " in role_lower or " vice president " in role_lower)
+        and any(scope in role_lower for scope in [" strategy ", " operations ", " product ", " technology ", " finance ", " ai ", " data "])
+    )
+
+
+def should_ask_north_star_for_role(role: str, has_existing_north_star: bool) -> bool:
+    if has_existing_north_star:
+        return False
+    return is_company_leadership_role(role)
