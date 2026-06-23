@@ -23,7 +23,9 @@ It interviews employees, builds company-level memory across interviews, generate
 
 The thesis framework is represented as a high-level discovery loop. The app operationalizes this framework through an agentic interview system that captures employee workflow information, updates structured notes, generates AI use cases, collects feedback, and stores validated company memory for later interviews.
 
-<img src="./AI-Enable.png" alt="AI-Enable full eight-step framework" width="650">
+<p align="center">
+  <img src="./AI-Enable.png" alt="AI-Enable full eight-step framework" width="650">
+</p>
 
 The full framework includes North Star definition, task breakdown, AI use-case identification, KPI definition, feasibility evaluation, roadmap creation, CFO approval, and pilot learning loops. The app currently covers Steps 1-5, with Step 1 reserved for very high-ranking company leadership.
 
