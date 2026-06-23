@@ -48,8 +48,8 @@ Requirements
 Clone the repository
 
 ```bash
-git clone https://github.com/ktolanoudis/ai-enable-interviewer.git
-cd ai-enable-interviewer
+git clone https://github.com/ktolanoudis/AI-Use-Case-Discovery-Agent.git
+cd AI-Use-Case-Discovery-Agent
 ```
 
 Create a virtual environment
@@ -71,13 +71,29 @@ Create the environment file
 cp .env.example .env
 ```
 
-Set the required values in `.env`, especially:
+Set the required values in `.env`. For a simple local run, use SQLite and local report files:
 
 ```bash
 OPENAI_API_KEY=sk-...
+DB_BACKEND=sqlite
+REPORT_STORAGE_BACKEND=local
+DISABLE_LOCAL_REPORTS=0
+SQLITE_DB_PATH=data/sessions.db
+LOCAL_REPORTS_DIR=reports
+```
+
+For a shared or server deployment, configure MongoDB and S3-compatible report storage:
+
+```bash
 DB_BACKEND=mongodb
-MONGODB_URI=...
+MONGODB_URI=mongodb+srv://...
 MONGODB_DB_NAME=ai_enable_discovery
+REPORT_STORAGE_BACKEND=s3
+S3_ENDPOINT_URL=https://s3.<region>.backblazeb2.com
+S3_BUCKET=...
+S3_ACCESS_KEY_ID=...
+S3_SECRET_ACCESS_KEY=...
+DISABLE_LOCAL_REPORTS=1
 ```
 
 Run locally without Docker
@@ -297,40 +313,40 @@ Runtime configuration is controlled through `.env`.
 
 Important files and modules:
 
-- [app/chainlit_app.py](/root/discovery/app/chainlit_app.py)
+- [app/chainlit_app.py](app/chainlit_app.py)
   Chainlit entrypoint, runtime event handling, resume behavior, and message routing
-- [app/company_flow.py](/root/discovery/app/company_flow.py)
+- [app/company_flow.py](app/company_flow.py)
   metadata collection and company-context confirmation flow
-- [app/question_flow.py](/root/discovery/app/question_flow.py)
+- [app/question_flow.py](app/question_flow.py)
   notes updates, readiness checks, company-theme validation, and LLM question planning
-- [app/interview_agent.py](/root/discovery/app/interview_agent.py)
+- [app/interview_agent.py](app/interview_agent.py)
   notes extraction and next-question planning prompts
-- [app/interview_flow.py](/root/discovery/app/interview_flow.py)
+- [app/interview_flow.py](app/interview_flow.py)
   closeout flow, final review handling, and use-case feedback state machine
-- [app/feedback_flow.py](/root/discovery/app/feedback_flow.py)
+- [app/feedback_flow.py](app/feedback_flow.py)
   report finalization, feedback aggregation, session persistence, and survey handoff
-- [app/company_memory.py](/root/discovery/app/company_memory.py)
+- [app/company_memory.py](app/company_memory.py)
   recurring-theme extraction, relevance checks, and theme alignment
-- [app/term_discovery.py](/root/discovery/app/term_discovery.py)
+- [app/term_discovery.py](app/term_discovery.py)
   public lookup and clarification for unknown tools and terms
-- [app/company_research.py](/root/discovery/app/company_research.py)
+- [app/company_research.py](app/company_research.py)
   company website and public web research
-- [app/db.py](/root/discovery/app/db.py)
+- [app/db.py](app/db.py)
   MongoDB and SQLite persistence
-- [app/checkpoints.py](/root/discovery/app/checkpoints.py)
+- [app/checkpoints.py](app/checkpoints.py)
   draft checkpoint save, restore, ownership, and fallback lookup
-- [public/branding.js](/root/discovery/public/branding.js)
+- [public/branding.js](public/branding.js)
   browser branding, progress bar behavior, New Chat handling, and survey link behavior
-- [public/custom.css](/root/discovery/public/custom.css)
+- [public/custom.css](public/custom.css)
   UI styling and responsive layout adjustments
-- [scripts/docker-run.sh](/root/discovery/scripts/docker-run.sh)
+- [scripts/docker-run.sh](scripts/docker-run.sh)
   build-and-run script used for Docker-based runs
 
 ---
 
 # Environment Notes
 
-The provided `.env.example` covers:
+Runtime configuration covers:
 
 - OpenAI model settings
 - MongoDB Atlas settings
@@ -340,7 +356,7 @@ The provided `.env.example` covers:
 - optional SerpAPI support for public lookup
 - optional post-interview survey URL
 
-For server use, MongoDB Atlas and S3-compatible report storage are the intended default path.
+For local development, use SQLite and local report storage. For server use, MongoDB Atlas and S3-compatible report storage are the intended default path. Add `POST_INTERVIEW_SURVEY_URL` to `.env` when the post-interview questionnaire should be enabled.
 
 ---
 
